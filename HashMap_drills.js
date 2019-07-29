@@ -59,5 +59,64 @@ const WhatDoesThisDo = function(){
 //    10   
 
 function deleteDuplicates(string) {
-  
+  let hash = new HashMap();
+  let newStr = '';
+  for (let i = 0; i < string.length; i++) {
+    // if char is in hash -> do nothing
+    // else -> add char to newStr, add char to hash
+    try {
+      hash.get(string[i]);
+    } catch(error) {
+      newStr += string[i];
+      hash.set(string[i], i);
+    }
+  }
+  return newStr;
 }
+
+// console.log(deleteDuplicates('google all that you think can think of'));
+
+function palindrome(string) {
+  let hash = new HashMap();
+  // if char not in hash -> char: 0
+  // else char: count + 1
+  for (let i = 0; i < string.length; i++) {
+    try {
+      // count + 1
+      let count = hash.get(string[i]);
+      hash.set(string[i], count + 1);
+    } catch(erro) {
+      // set char : 0;
+      hash.set(string[i], 1);
+    }
+  }
+  let oddCounts = 0;
+  for (let i = 0; i < hash._hashTable.length; i++) {
+    if (hash._hashTable[i] !== undefined) {
+      if (hash._hashTable[i].value % 2 === 1) {
+        oddCounts += 1;
+      }
+    }
+  }
+  return oddCounts < 2;
+}
+
+// console.log(palindrome('dda'));
+
+function sortWord(word) {
+  return word.split('').sort().join('');
+}
+
+const input = ['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race'];
+
+const anagrams = (words) => {
+  const groups = new Map();
+  words.forEach( word => {
+    const sorted = sortWord(word);
+    const group = groups.get(sorted) || [];
+    groups.set(sorted, [...group, word]);
+  });
+  return Array.from(groups.values());
+};
+
+console.log(anagrams(input));
